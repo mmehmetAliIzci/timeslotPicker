@@ -39,8 +39,8 @@ function App() {
     }
 
     return (
-        <div className='App'>
-            Timeslot Selection
+        <div className='App font-mono'>
+            <div className='w-screen text-2xl text-center bg-amber-500 p-20 shadow-md'>Timeslot Selection</div>
             <div className='content-wrapper'>
                 {loading && 'Loading'}
                 <div className='flex flex-row'>

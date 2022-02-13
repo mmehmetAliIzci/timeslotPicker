@@ -47,7 +47,15 @@ export function Company(props: { company: ICompanyWithGroupedTimeslots }): React
     const renderDays = useCallback(
         () =>
             availableTimeslots.map((group: IGroupedTimeslots) => {
-                const dayHeader = <div>{new Date(group.date).toLocaleDateString(locale, { weekday: 'long' })}</div>;
+                const dayHeader = (
+                    <div className='text-lg my-5'>
+                        {new Date(group.date).toLocaleDateString(locale, {
+                            weekday: 'long',
+                            month: 'short',
+                            day: '2-digit',
+                        })}
+                    </div>
+                );
 
                 const timeslots = renderTimeslots(group);
                 return (
@@ -61,17 +69,19 @@ export function Company(props: { company: ICompanyWithGroupedTimeslots }): React
     );
 
     return (
-        <div className='flex-[1_0] flex-col p-3 m-5 overflow-auto' key={companyName}>
-            <span className='text-xl'>{companyName}</span>
+        <div className='flex-[1_0] flex-col p-3 m-5 ' key={companyName}>
+            <div className='text-2xl text-center'>{companyName}</div>
             <div>
                 <span>Selected Timeslot :</span>
                 <Timeslot
-                    isSelected={true}
+                    isHeader
                     timeslot={selectedTimeslot}
                     handleClick={() => handleTimeslotClick(selectedTimeslot)}
                 />
             </div>
-            {renderDays()}
+            <div className='overflow-auto' style={{ height: '67vh' }}>
+                {renderDays()}
+            </div>
         </div>
     );
 }
