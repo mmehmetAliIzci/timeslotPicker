@@ -6,13 +6,13 @@ interface TimeslotParams {
     timeslot?: IParsedTimeslot;
     handleClick: (timeslot?: IParsedTimeslot) => void;
     isBlocked?: boolean;
-    isReserved?: boolean;
+    isSelected?: boolean;
 }
 
 export function Timeslot (props: TimeslotParams): ReactElement {
     let timeslotClass = cn("bg-cyan-500 shadow-lg p-10 my-3 rounded-2xl cursor-pointer hover:bg-sky-700 hover:bg-sky-700 hover:text-white",{
         'bg-slate-400': props.isBlocked,
-        'bg-indigo-500': props.isReserved,
+        'bg-indigo-500': props.isSelected,
     })
     return (
         <div className={timeslotClass}
