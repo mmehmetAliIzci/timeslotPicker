@@ -1,4 +1,5 @@
 import {ITimeslot} from "../api/types";
+import {locale} from "./constants";
 
 export interface IParsedTimeslot {
     start_time: Date;
@@ -44,7 +45,8 @@ export function groupTimeslotsByDay(timeslots: Array<ITimeslot>): Array<IGrouped
             start_time: new Date(timeslot.start_time),
             end_time: new Date(timeslot.end_time)
         }
-        let dateKey = parsedTimeslot.start_time.toLocaleDateString('en-gb',
+
+        let dateKey = parsedTimeslot.start_time.toLocaleDateString(locale,
             {
                 year: 'numeric',
                 month: 'numeric',
@@ -58,7 +60,6 @@ export function groupTimeslotsByDay(timeslots: Array<ITimeslot>): Array<IGrouped
             groupedTimeslots.push({date: dateKey, timeSlots: [parsedTimeslot]})
         }
     })
-
     return groupedTimeslots;
 }
 
