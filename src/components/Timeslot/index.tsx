@@ -5,20 +5,21 @@ import cn from "classnames";
 interface TimeslotParams {
     timeslot?: IParsedTimeslot;
     handleClick: (timeslot?: IParsedTimeslot) => void;
-    isBlocked?: boolean;
+    disabled?: boolean;
     isSelected?: boolean;
 }
 
 export function Timeslot (props: TimeslotParams): ReactElement {
-    let timeslotClass = cn("bg-cyan-500 shadow-lg p-10 my-3 rounded-2xl cursor-pointer hover:bg-sky-700 hover:bg-sky-700 hover:text-white",{
-        'bg-slate-400': props.isBlocked,
+    let timeslotClass = cn("bg-cyan-500 shadow-lg p-10 my-3 rounded-2xl w-full",{
+        'bg-slate-400': props.disabled,
         'bg-indigo-500': props.isSelected,
+        'cursor-pointer hover:bg-sky-700 hover:text-white': !props.disabled
     })
     return (
-        <div className={timeslotClass}
+        <button className={timeslotClass} disabled={props.disabled}
             onClick={() => props.handleClick(props.timeslot)}>
             {getHoursMinutesFromDateTime(props.timeslot?.start_time)}
             {` - `}
             {getHoursMinutesFromDateTime(props.timeslot?.end_time)}
-        </div>);
+        </button>);
 }
