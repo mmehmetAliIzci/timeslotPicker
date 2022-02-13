@@ -3,12 +3,16 @@ import './App.scss';
 import {getCompanies} from "./api/getCompanies";
 import {Company} from "./components/Company";
 import {getCompanyWithGroupedDates, ICompanyWithGroupedTimeslots} from "./util/getCompanyWithGroupedDates";
+import {TimeslotState, useTimeslotsStore} from "./stores/timeslotsStore";
 
+const getInitTimeslotsStore = (state:TimeslotState) => state.initTimeslotsStore;
 function App() {
 
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string>("");
     const [companies, setCompanies] = useState<Array<ICompanyWithGroupedTimeslots>>([]);
+
+    const initTimeslotsStore = useTimeslotsStore(getInitTimeslotsStore);
 
     useEffect(() => {
         async function loadCompanies (){
@@ -20,6 +24,7 @@ function App() {
                 setError(error);
             } else if (companies){
                 setCompanies(companies.map(getCompanyWithGroupedDates));
+                initTimeslotsStore(companies)
                 setError("");
             }
             setLoading(false);
