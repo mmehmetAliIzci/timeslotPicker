@@ -1,7 +1,13 @@
-import {ITimeslot} from "../../api/types";
 import {ReactElement} from "react";
+import {IParsedTimeslot} from "../../util/groupTimeslotsByDay";
+import {getHoursMinutesFromDateTime} from "../../util/getHoursMinutesFromDateTime";
 
-export function Timeslot (props: { timeslot: ITimeslot }): ReactElement {
+export function Timeslot (props: { timeslot: IParsedTimeslot }): ReactElement {
     const {start_time, end_time} = props.timeslot;
-    return (<div>{start_time} {end_time}</div>);
+    return (
+        <div>
+            {getHoursMinutesFromDateTime(start_time)}
+            {` - `}
+            {getHoursMinutesFromDateTime(end_time)}
+        </div>);
 }
