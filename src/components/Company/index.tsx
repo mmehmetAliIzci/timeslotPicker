@@ -1,5 +1,3 @@
-import './styles.scss';
-
 import { ReactElement, useCallback } from 'react';
 
 import { ICompanyTimeslot, TimeslotState, useTimeslotsStore } from '../../stores/timeslotsStore';
@@ -12,23 +10,27 @@ import { Timeslot } from '../Timeslot';
 const getToggleTimeslots = (state: TimeslotState) => state.toggleTimeslots;
 const getTimeslots = (state: TimeslotState) => state.timeslots;
 export function Company(props: { company: ICompanyWithGroupedTimeslots }): ReactElement {
-    const { name, availableTimeslots } = props.company;
+    const { name: companyName, availableTimeslots } = props.company;
     const toggleTimeslots = useTimeslotsStore(getToggleTimeslots);
-    const selectedTimeslots = useTimeslotsStore(getTimeslots);
-    const selectedTimeslot = getSelectedTimeslot(name, selectedTimeslots);
+    const selectedTimeslotsAcrossCompanies = useTimeslotsStore(getTimeslots);
+    const selectedTimeslot = getSelectedTimeslot(companyName, selectedTimeslotsAcrossCompanies);
 
     const handleTimeslotClick = useCallback(
         (timeslot?: IParsedTimeslot) => {
-            toggleTimeslots({ company: name, selectedTimeslot: timeslot });
+            toggleTimeslots({ company: companyName, selectedTimeslot: timeslot });
         },
-        [name, toggleTimeslots]
+        [companyName, toggleTimeslots]
     );
 
     const renderTimeslots = useCallback(
-        (group: IGroupedTimeslots) => {
-            return group.timeSlots.map((timeslot, index) => {
+        (group: IGroupedTimeslots) =>
+            group.timeSlots.map((timeslot, index) => {
                 const isSelected = isTimeslotsEqual(selectedTimeslot, timeslot);
-                const isBlocked = isTimeslotSelectedAcrossCompanies(timeslot, name, selectedTimeslots);
+                const isBlocked = isTimeslotSelectedAcrossCompanies(
+                    timeslot,
+                    companyName,
+                    selectedTimeslotsAcrossCompanies
+                );
                 return (
                     <Timeslot
                         key={index}
@@ -38,28 +40,29 @@ export function Company(props: { company: ICompanyWithGroupedTimeslots }): React
                         handleClick={handleTimeslotClick}
                     />
                 );
-            });
-        },
-        [handleTimeslotClick, selectedTimeslot, selectedTimeslots]
+            }),
+        [handleTimeslotClick, selectedTimeslot, selectedTimeslotsAcrossCompanies]
     );
 
-    const renderDays = useCallback(() => {
-        return availableTimeslots.map((group: IGroupedTimeslots) => {
-            const dayHeader = <div>{new Date(group.date).toLocaleDateString(locale, { weekday: 'long' })}</div>;
+    const renderDays = useCallback(
+        () =>
+            availableTimeslots.map((group: IGroupedTimeslots) => {
+                const dayHeader = <div>{new Date(group.date).toLocaleDateString(locale, { weekday: 'long' })}</div>;
 
-            const timeslots = renderTimeslots(group);
-            return (
-                <div key={group.date}>
-                    {dayHeader}
-                    {timeslots}
-                </div>
-            );
-        });
-    }, [availableTimeslots, renderTimeslots]);
+                const timeslots = renderTimeslots(group);
+                return (
+                    <div key={group.date}>
+                        {dayHeader}
+                        {timeslots}
+                    </div>
+                );
+            }),
+        [availableTimeslots, renderTimeslots]
+    );
 
     return (
-        <div className='flex-[1_0] flex-col p-3 m-5 max-h-screen overflow-auto' key={name}>
-            <span className='text-xl'>{name}</span>
+        <div className='flex-[1_0] flex-col p-3 m-5 overflow-auto' key={companyName}>
+            <span className='text-xl'>{companyName}</span>
             <div>
                 <span>Selected Timeslot :</span>
                 <Timeslot
