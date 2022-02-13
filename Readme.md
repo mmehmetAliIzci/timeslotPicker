@@ -1,46 +1,111 @@
-# Getting Started with Create React App
+# How to run
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+First Install dependencies
+`npm install`
 
-## Available Scripts
+## Run
+### API
+As suggested in challenge JSON server will be running in port 3001 by default. If you wish to change it, Provide `API_BASE_URL` to give different port.
 
-In the project directory, you can run:
+`npx json-server --watch data.json --port portnumber`
 
-### `yarn start`
+### React
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Run `npm start`
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
 
-### `yarn test`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## What is important for this challange ?
 
-### `yarn build`
+-   How you would structure your code,
+-   Clean code and best practices (like reusable components and separation of concerns)
+-   Possibly tests
+-   Create a good user experience,
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+It is safe to assume that code quality and problem-solving are 70% and ui / ux is 30% weighted.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Thought process
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### How is the data structure
 
-### `yarn eject`
+First i would like to know what kind of data we are getting from the JSON. Key points to think about:
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+-   Does all timeslots has same time frame ?
+-   Does all companies has the same time slots ?
+-   Does every day has the same time slots ?
+-   Does BE provides timeslots that are already picked ?
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+After investigating these questions we can safely say that:
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+-   Every timeslot has 1,5 time frame
+-   No it differs from company to company
+-   No it differs from day by day
+-   No but I guess we can alter that somehow
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+### How do we want to present the layout and what should be the components
 
-## Learn More
+Looking at design and some drawings I made, it is clear to me that following is necessary to create clean code:
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+-   CompanyComponent
+-   TimeslotComponent 
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+**Bussiness logic says:** Every company will have only one selected timeslot. That selected timeslot should block same timeslots in other companies. This means one TimeslotComponent should be able to change the selectability of other TimeslotComponents. This can be solved more practically via global store. 
+
+### Structuring date data
+
+We want to re-structure given date data to make it more meaningful.
+
+_First approach:_
+
+```js
+    {
+      Monday: [Ascending{start_time: xx, end_time}, {start_time: xx, end_time}],
+      Wednesday: [Ascending{start_time: xx, end_time}, {start_time: xx, end_time}]
+    }
+```
+
+-   What if there is two months in the response ?
+-   What if there is two years in the response ?
+-   What if start time is in 2022 but end time is in 2023 ?
+
+_Second approach:_
+
+```js
+    {
+      "20-01-2022": [Ascending{start_time: xx, end_time}, {start_time: xx, end_time}],
+      "21-01-2022": [Ascending{start_time: xx, end_time}, {start_time: xx, end_time}]
+    }
+```
+
+Getting which day is 20-01-2022 is eas
+
+### Folder structure
+
+It is a good convention to do the following in my experience
+
+```
+Components
+----ComponentA
+--------__tests__
+------------componentA.spec.ts
+--------index.tsx
+--------styles.scss
+----ComponentB
+--------index.tsx
+--------styles.scss
+Api
+----getStuff.ts
+----getStuff.spec.ts
+Hooks
+----useTimeSlot.ts
+Pages
+----Page.ts
+index.tsx
+```
+
+### Libraries that has been used
+- `tailwind` for design
+- `classnames` for easy conditional class names
+- `zustand` for global store
+- `jest` `prettier` `eslint` for easy development and linting
+
