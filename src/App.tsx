@@ -1,26 +1,48 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, {useEffect, useState} from 'react';
+import './App.scss';
+import {getCompanies} from "./api/getCompanies";
+import {Company} from "./components/Company";
+import {getCompanyWithGroupedDates, ICompanyWithGroupedTimeslots} from "./util/getCompanyWithGroupedDates";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+    const [loading, setLoading] = useState<boolean>(false);
+    const [error, setError] = useState<string>("");
+    const [companies, setCompanies] = useState<Array<ICompanyWithGroupedTimeslots>>([]);
+
+    useEffect(() => {
+        async function loadCompanies (){
+            setLoading(true);
+            const {companies, error} = await getCompanies();
+
+            if (error) {
+                setCompanies([]);
+                setError(error);
+            } else if (companies){
+                setCompanies(companies.map(getCompanyWithGroupedDates));
+                setError("");
+            }
+            setLoading(false);
+        }
+
+        loadCompanies();
+    },[])
+
+    if (error) {
+        return <div>Error</div>
+    }
+
+    return (
+        <div className="App">
+            Timeslot Selection
+            <div className="content-wrapper">
+                {loading && "Loading"}
+                <div className="flex flex-row">
+                    {companies.map(company => <Company key={company.id} company={company}/>)}
+                </div>
+            </div>
+        </div>
+    );
 }
 
 export default App;
