@@ -1,111 +1,135 @@
-# How to run
+# Time Slot Reservation System
 
-First Install dependencies
-`npm install`
+A dynamic and user-friendly web application for scheduling and managing time slot reservations.
 
-## Run
-### API
-As suggested in challenge JSON server will be running in port 3001 by default. If you wish to change it, Provide `API_BASE_URL` to give different port.
+## Introduction
 
-`npx json-server --watch data.json --port portnumber`
+This React-based web application is designed to improve the interaction between call center agents and customers by facilitating an efficient time slot reservation process. It aims to provide a seamless experience for agents to select and manage time slots for various companies.
 
-### React
+## Technologies Used
 
-Run `npm start`
+- React
+- Tailwind CSS for styling
+- `classnames` for easy conditional class names
+- Zustand for state management
+- JSON Server for mock REST API
+- Jest, Prettier, ESLint for testing and development
 
+## Project Background
 
+This project was developed as a part of a technical assessment challenge. The key requirements were:
 
-## What is important for this challange ?
+- Create a REST API to serve time slots.
+- Build a React application to fetch and display time slots.
+- Implement a user-friendly interface for selecting and reserving time slots.
+- Ensure reservation functionality is intuitive and efficient.
 
--   How you would structure your code,
--   Clean code and best practices (like reusable components and separation of concerns)
--   Possibly tests
--   Create a good user experience,
+The project focuses on providing a solution that is both functionally robust and user-friendly.
 
-It is safe to assume that code quality and problem-solving are 70% and ui / ux is 30% weighted.
+## Features
 
-## Thought process
+- Interactive UI for selecting time slots.
+- Time slots displayed in a human-readable format, sorted and grouped by date.
+- Functionality to set, highlight, and deselect reservations.
+- Blocking of conflicting time slots across companies.
 
-### How is the data structure
+## Challenges and Solutions
 
-First i would like to know what kind of data we are getting from the JSON. Key points to think about:
+- **Challenge 1**: Efficiently managing state across multiple components.
+  - **Solution**: Used Zustand for global state management to synchronize state across components.
 
--   Does all timeslots has same time frame ?
--   Does all companies has the same time slots ?
--   Does every day has the same time slots ?
--   Does BE provides timeslots that are already picked ?
+## What I Learned
 
-After investigating these questions we can safely say that:
+- Enhanced understanding of state management in React.
+- Improved skills in building RESTful APIs with JSON Server.
+- Deeper insights into creating responsive and user-friendly interfaces with Tailwind CSS.
 
--   Every timeslot has 1,5 time frame
--   No it differs from company to company
--   No it differs from day by day
--   No but I guess we can alter that somehow
+## Thought Process
 
-### How do we want to present the layout and what should be the components
+### How is the Data Structure
 
-Looking at design and some drawings I made, it is clear to me that following is necessary to create clean code:
+Understanding the structure of data provided in the JSON was crucial. Key considerations were:
 
--   CompanyComponent
--   TimeslotComponent 
+- Are all timeslots of the same duration?
+- Do all companies have the same timeslots?
+- Do timeslots vary by day?
+- Does the backend provide information on timeslots already booked?
 
-**Bussiness logic says:** Every company will have only one selected timeslot. That selected timeslot should block same timeslots in other companies. This means one TimeslotComponent should be able to change the selectability of other TimeslotComponents. This can be solved more practically via global store. 
+After analysis, it was concluded:
 
-### Structuring date data
+- Each timeslot has a 1.5-hour duration.
+- Timeslots vary from company to company and day by day.
+- The provided data doesn't include booked timeslots but can be adapted to show this.
 
-We want to re-structure given date data to make it more meaningful.
+### Presenting the Layout and Components
+
+The design process led to the decision to use two primary components for clean and efficient code:
+
+- `CompanyComponent`
+- `TimeslotComponent`
+
+The business logic dictated that each company should have only one selected timeslot, which should block the same timeslot in other companies. This interactivity between `TimeslotComponents` was best managed using a global store.
+
+### Structuring Date Data
+
+The aim was to restructure the date data to be more meaningful and intuitive:
 
 _First approach:_
 
 ```js
-    {
-      Monday: [Ascending{start_time: xx, end_time}, {start_time: xx, end_time}],
-      Wednesday: [Ascending{start_time: xx, end_time}, {start_time: xx, end_time}]
-    }
+{
+  Monday: [{start_time: 'xx', end_time: 'yy'}, ...],
+  Wednesday: [{start_time: 'xx', end_time: 'yy'}, ...]
+}
 ```
 
--   What if there is two months in the response ?
--   What if there is two years in the response ?
--   What if start time is in 2022 but end time is in 2023 ?
+Challenges with this approach:
+
+- Handling data spanning multiple months or years.
+- Dealing with timeslots that cross over to the next day.
 
 _Second approach:_
 
 ```js
-    {
-      "20-01-2022": [Ascending{start_time: xx, end_time}, {start_time: xx, end_time}],
-      "21-01-2022": [Ascending{start_time: xx, end_time}, {start_time: xx, end_time}]
-    }
+{
+  "20-01-2022": [{start_time: 'xx', end_time: 'yy'}, ...],
+  "21-01-2022": [{start_time: 'xx', end_time: 'yy'}, ...]
+}
 ```
 
-Getting which day is 20-01-2022 is eas
+This approach simplifies identifying specific days, making data handling more straightforward.
 
-### Folder structure
+## Installation and Setup
 
-It is a good convention to do the following in my experience
+To set up and run the project:
 
-```
-Components
-----ComponentA
---------__tests__
-------------componentA.spec.ts
---------index.tsx
---------styles.scss
-----ComponentB
---------index.tsx
---------styles.scss
-Api
-----getStuff.ts
-----getStuff.spec.ts
-Hooks
-----useTimeSlot.ts
-Pages
-----Page.ts
-index.tsx
-```
+1. Clone the repository:
+   ```bash
+   git clone [repository-link]
+   cd [repository-name]
+   ```
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+3. Run the JSON server:
+   ```bash
+   npx start-server
+   ```
+4. Start the React application:
+   ```bash
+   npm start
+   ```
 
-### Libraries that has been used
-- `tailwind` for design
-- `classnames` for easy conditional class names
-- `zustand` for global store
-- `jest` `prettier` `eslint` for easy development and linting
+## Screenshots/Demo
 
+Include screenshots or a link to a video demo if available.
+
+## Future Improvements
+
+- Implementation of real-time updates for time slot availability with sockets.
+- Think more for better accessibility. And a11y features
+
+## Initial completion date and duration spent
+
+Monday, the 14th of February 2022 - 10hours
