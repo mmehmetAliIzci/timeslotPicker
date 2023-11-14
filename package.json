@@ -18,6 +18,7 @@
         "zustand": "^3.7.0"
     },
     "scripts": {
+        "start-server": "npx json-server --watch data.json --port 3001",
         "start": "react-scripts start",
         "build": "react-scripts build",
         "test": "jest",
