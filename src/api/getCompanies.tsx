@@ -1,4 +1,4 @@
-import data from '../../data.json';
+import data from '../data.json';
 import { API_BASE_URL } from '../util/constants';
 import { ICompany } from './types';
 
