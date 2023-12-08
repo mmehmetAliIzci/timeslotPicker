@@ -41,7 +41,7 @@ function App() {
     return (
         <div className='App font-mono'>
             <div className='w-screen text-2xl text-center bg-amber-500 p-20 shadow-md'>Timeslot Selection</div>
-            <div className='content-wrapper'>
+            <div className='content-wrapper sm:px-10 md:px-20 lg:px-40'>
                 {loading && 'Loading'}
                 <div className='flex flex-row'>
                     {companies.map((company) => (

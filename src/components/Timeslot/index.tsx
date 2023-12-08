@@ -12,7 +12,8 @@ interface TimeslotParams {
 }
 
 export function Timeslot(props: TimeslotParams): ReactElement {
-    const timeslotClass = cn('bg-cyan-500 shadow-lg p-10 my-3 rounded-2xl w-full', {
+    const timeslotClass = cn('shadow-lg p-10 my-3 rounded-2xl w-full', {
+        'bg-cyan-500 ': !props.isSelected,
         'bg-slate-400': props.disabled,
         'bg-blue-500': props.isSelected,
         'bg-red-400': props.isHeader,
