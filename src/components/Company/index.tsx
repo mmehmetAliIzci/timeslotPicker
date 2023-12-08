@@ -9,6 +9,7 @@ import { Timeslot } from '../Timeslot';
 
 const getToggleTimeslots = (state: TimeslotState) => state.toggleTimeslots;
 const getTimeslots = (state: TimeslotState) => state.timeslots;
+
 export function Company(props: { company: ICompanyWithGroupedTimeslots }): ReactElement {
     const { name: companyName, availableTimeslots } = props.company;
     const toggleTimeslots = useTimeslotsStore(getToggleTimeslots);
