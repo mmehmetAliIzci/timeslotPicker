@@ -1,3 +1,4 @@
+import data from '../../data.json';
 import { API_BASE_URL } from '../util/constants';
 import { ICompany } from './types';
 
@@ -19,6 +20,17 @@ export async function getCompanies(): Promise<IGetCompanies> {
                 error: 'Something went wrong while parsing results',
             };
         }
+    } catch (e) {
+        return {
+            companies: null,
+            error: 'Something went wrong while fetching companies',
+        };
+    }
+}
+
+export async function getCompaniesStatic(): Promise<IGetCompanies> {
+    try {
+        return Promise.resolve({ companies: data.data });
     } catch (e) {
         return {
             companies: null,

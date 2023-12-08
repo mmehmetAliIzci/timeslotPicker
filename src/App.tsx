@@ -2,7 +2,7 @@ import './App.scss';
 
 import React, { useEffect, useState } from 'react';
 
-import { getCompanies } from './api/getCompanies';
+import { getCompaniesStatic } from './api/getCompanies';
 import { Company } from './components/Company';
 import { TimeslotState, useTimeslotsStore } from './stores/timeslotsStore';
 import { getCompanyWithGroupedDates, ICompanyWithGroupedTimeslots } from './util/getCompanyWithGroupedDates';
@@ -18,7 +18,7 @@ function App() {
     useEffect(() => {
         async function loadCompanies() {
             setLoading(true);
-            const { companies, error } = await getCompanies();
+            const { companies, error } = await getCompaniesStatic();
 
             if (error) {
                 setCompanies([]);
