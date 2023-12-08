@@ -23,6 +23,7 @@
         "build": "react-scripts build",
         "test": "jest",
         "test:watch": "jest --watch",
+        "format": "prettier --write .",
         "eject": "react-scripts eject"
     },
     "eslintConfig": {
