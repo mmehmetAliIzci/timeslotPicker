@@ -2,6 +2,8 @@
 
 A dynamic and user-friendly web application for scheduling and managing time slot reservations.
 
+[LIVE](https://timeslot-picker.vercel.app/)
+
 [Demo](./assets/demo.gif)
 
 ## Introduction
