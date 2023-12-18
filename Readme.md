@@ -4,7 +4,7 @@ A dynamic and user-friendly web application for scheduling and managing time slo
 
 [LIVE](https://timeslot-picker.vercel.app/)
 
-[Demo](./assets/demo.gif)
+![Demo](./assets/demo.gif)
 
 ## Introduction
 
@@ -110,10 +110,6 @@ _Second approach:_
 ```
 
 This approach simplifies identifying specific days, making data handling more straightforward.
-
-## Screenshots/Demo
-
-https://github.com/mmehmetAliIzci/CodePortfolio-Frontend/assets/7356299/8f3e41fc-8a6e-4b68-a65d-0224b8322213
 
 ## Future Improvements
 
